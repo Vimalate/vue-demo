@@ -44,7 +44,6 @@ export default {
       }
     },
     onActive(data, i) {
-      console.log(data, i);
       this.currentIndex = i
     },
     getMonthList() {
@@ -88,9 +87,9 @@ export default {
 
 <style lang="scss" scoped>
 .calender {
-  margin: 25px 30px 25px 30px;
+  margin: 25px 20px 25px 20px;
   background-color: #fff;
-  padding: 20px 0;
+  padding: 20px 10px;
 }
 .select-header {
   margin: 0 auto;
