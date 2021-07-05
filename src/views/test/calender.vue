@@ -1,9 +1,9 @@
 <template>
   <div class="calender">
     <div class="select-header">
-      <van-icon name="arrow-left" @click="subtractMonth" />
+      <van-icon name="arrow-left" @click="changeMonth('subtract')" />
       <span>{{queryYear}}年</span><span class="month">{{queryMonth}}月</span>
-      <van-icon name="arrow" @click="addMonth" />
+      <van-icon name="arrow" @click="changeMonth('add')" />
     </div>
     <div class="week">
       <div v-for="(item,index) in week" :key="index">{{item}}</div>
@@ -63,27 +63,25 @@ export default {
         }
         this.monthList.push(dateObj)
       }
-      let len = this.monthList.length%7
-      len=len?7-len:len
+      let len = this.monthList.length % 7
+      len = len ? 7 - len : len
       for (let i = 0; i < len; i++) {
         this.monthList.push({})
       }
       // console.log(numDays, todayWeek, this.monthList);
     },
-    subtractMonth() {
-      this.currentIndex=null
-      this.curMonth = $dayjs(this.curMonth + '-01').subtract(1, 'month').format("YYYY-MM")
+    changeMonth(type) {
+      this.currentIndex = null
+      if (type == 'subtract') {
+        this.curMonth = $dayjs(this.curMonth + '-01').subtract(1, 'month').format("YYYY-MM")
+      } else {
+        this.curMonth = $dayjs(this.curMonth + '-01').add(1, 'month').format("YYYY-MM")
+      }
       this.queryYear = $dayjs(this.curMonth).format("YYYY")
       this.queryMonth = $dayjs(this.curMonth).format("MM")
       this.getMonthList()
+
     },
-    addMonth() {
-      this.currentIndex=null
-      this.curMonth = $dayjs(this.curMonth + '-01').add(1, 'month').format("YYYY-MM")
-      this.queryYear = $dayjs(this.curMonth).format("YYYY")
-      this.queryMonth = $dayjs(this.curMonth).format("MM")
-      this.getMonthList()
-    }
   }
 }
 </script>
@@ -92,6 +90,7 @@ export default {
 .calender {
   margin: 25px 30px 25px 30px;
   background-color: #fff;
+  padding: 20px 0;
 }
 .select-header {
   margin: 0 auto;
@@ -114,6 +113,7 @@ export default {
   font-size: 16px;
   color: #9097a5;
   margin-bottom: 12px;
+  margin-top: 15px;
 }
 .day {
   display: flex;
@@ -146,7 +146,6 @@ export default {
     }
     .active {
       background-color: #2263e8;
-     
     }
   }
 }
