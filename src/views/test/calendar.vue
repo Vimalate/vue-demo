@@ -1,5 +1,5 @@
 <template>
-  <div class="calender">
+  <div class="calendar">
     <div class="select-header">
       <van-icon name="arrow-left" @click="changeMonth('subtract')" />
       <span>{{queryYear}}年</span><span class="month">{{queryMonth}}月</span>
@@ -86,7 +86,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.calender {
+.calendar {
   margin: 25px 20px 25px 20px;
   background-color: #fff;
   padding: 20px 10px;

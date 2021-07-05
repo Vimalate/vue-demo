@@ -25,9 +25,9 @@ export const constantRouterMap = [
         meta: { title: '关于我', keepAlive: false }
       },
       {
-        path: '/calender',
-        name: 'calender',
-        component: () => import('@/views/test/calender'),
+        path: '/calendar',
+        name: 'calendar',
+        component: () => import('@/views/test/calendar'),
         meta: { title: '日历', keepAlive: false }
       }
     ]
