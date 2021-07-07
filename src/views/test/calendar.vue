@@ -9,9 +9,10 @@
       <div v-for="(item,index) in week" :key="index">{{item}}</div>
     </div>
     <div class="day">
-      <div v-for="(item,i) in monthList" :key="i" class="day-item" @click="onActive(item,i)" :style="currentIndex==i?'background-color: #2263e8;color: #fff;':''">
+      <div v-for="(item,i) in monthList" :key="i" class="day-item" @click="onActive(item,i)" :style="currentIndex==i?'background-color: #2263e8;color: #fff;':''" :class="[isToday(item.date)?'today':'']">
         <span class="dd">{{item.dd||' '}}</span>
-        <span class="holiday">{{isHoliday(item.date)}}</span>
+        <!-- <span class="holiday">{{isHoliday(item.date)}}</span> -->
+        <span class="holiday" v-if="item.lunar">{{item.lunar.Term||item.lunar.IDayCn}}</span>
       </div>
     </div>
 
@@ -20,6 +21,7 @@
 
 <script>
 import $dayjs from 'dayjs'
+import { calendar } from '@/utils/calendar'
 export default {
   data() {
     return {
@@ -35,6 +37,9 @@ export default {
     this.getMonthList()
   },
   methods: {
+    isToday(date){
+     return date==$dayjs().format('YYYY-MM-DD')
+    },
     isHoliday(date) {
       let num = $dayjs(date).day()
       if (num == 6 || num == 0) {
@@ -56,11 +61,17 @@ export default {
         this.monthList.push({})
       }
       for (let i = 1; i <= numDays; i++) {
+        let y = $dayjs(this.curMonth + i).format('YYYY')
+        let m = $dayjs(this.curMonth + i).format('MM')
+        let d = $dayjs(this.curMonth + i).format('DD')
+        let lunar = this.solar2lunar(y, m, d)
         let dateObj = {
           date: $dayjs(this.curMonth + i).format('YYYY-MM-DD'),
-          dd: $dayjs(this.curMonth + i).format('D')
+          dd: $dayjs(this.curMonth + i).format('D'),
+          lunar
         }
         this.monthList.push(dateObj)
+
       }
       let len = this.monthList.length % 7
       len = len ? 7 - len : len
@@ -68,6 +79,16 @@ export default {
         this.monthList.push({})
       }
       // console.log(numDays, todayWeek, this.monthList);
+    },
+    /**
+     * 获取农历
+     * @y 年
+     * @m 月
+     * @d 日
+     */
+    solar2lunar(y, m, d) {
+      let date = calendar.solar2lunar(y, m, d)
+      return date
     },
     changeMonth(type) {
       this.currentIndex = null
@@ -136,8 +157,10 @@ export default {
     // justify-content: center;
     flex-direction: column;
     .holiday {
-      font-size: 12px;
-      margin-top: -2px;
+      display: block;
+      font-size: 10px;
+      -webkit-transform: scale(.9);
+      margin-top: -3px;
     }
     .dd {
       margin-top: 6px;
@@ -147,5 +170,9 @@ export default {
       background-color: #2263e8;
     }
   }
+}
+.today{
+  background-color: #409eff;
+  color: #fff;
 }
 </style>
