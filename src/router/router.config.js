@@ -29,6 +29,18 @@ export const constantRouterMap = [
         name: 'calendar',
         component: () => import('@/views/test/calendar'),
         meta: { title: '日历', keepAlive: false }
+      },
+      {
+        path: '/scroll',
+        name: 'scroll',
+        component: () => import('@/views/test/scroll'),
+        meta: { title: '滑动', keepAlive: false }
+      },
+      {
+        path: '/swiper',
+        name: 'swiper',
+        component: () => import('@/views/test/swiper'),
+        meta: { title: '滑动', keepAlive: false }
       }
     ]
   }
