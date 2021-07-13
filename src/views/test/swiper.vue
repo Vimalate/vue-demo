@@ -1,9 +1,11 @@
 <template>
   <div class="recommendPage">
-    <swiper :options="swiperOption" ref="mySwiper">
+    <van-search v-model="value" shape="round" background="#4fc08d" placeholder="请输入搜索关键词" />
+    <swiper :options="swiperOption" ref="mySwiper" @slideChange="slideChange">
       <swiper-slide v-for="(item,index) in swiperList" :key="index">I'm Slide {{item}}</swiper-slide>
       <div class="swiper-pagination" slot="pagination"></div>
     </swiper>
+
   </div>
 </template>
 
@@ -11,7 +13,7 @@
 // 引入插件
 import { swiper, swiperSlide } from "vue-awesome-swiper";
 import "swiper/dist/css/swiper.css";
-// var vm = this
+import {debounce} from 'lodash'
 export default {
   components: {
     swiper,
@@ -21,22 +23,27 @@ export default {
     return {
       active: 1,
       defaultActive: 1,
-      swiperList: [1, 2, 3],
+      swiperList: [1, 2, '我改变了'],
+      value: '',
       swiperOption: {
         autoplay: false,
         initialSlide: 1,
+        observer: true,
+        loop: true,
+        observeParents: true,
+        observeSlideChildren: true,
         // 显示分页
         pagination: {
           el: ".swiper-pagination",
           clickable: true //允许分页点击跳转
         },
-        on: {
-          slideChange: function () {
-            vm.active = this.activeIndex
-            console.log(this, this.active)
+        // on: {
+        //   slideChange: function () {
+        //     this.active = this.activeIndex
+        //     console.log(this, this.active)
 
-          }
-        }
+        //   }
+        // }
 
       }
     };
@@ -46,18 +53,52 @@ export default {
       return this.$refs.mySwiper.swiper;
     }
   },
-  watch:{
-    active:{
-      handler(val){
-        console.log(val);
+  methods: {
+    slideChange() {
+      this.active = this.$refs.mySwiper.swiper.activeIndex
+      console.log('slideChange', this.active);
+    },
+    search: debounce(function() {
+      console.log(this.value);
+    }, 1000)
+  },
+  watch: {
+    active: {
+      handler(newVal, oldVal) {
+        console.log('watch', newVal, oldVal);
+        if (newVal > oldVal && newVal > this.defaultActive) {
+          this.swiperList[2] = '我改变了1'
+          this.$nextTick(() => {
+            this.$refs.mySwiper.update()
+          })
+
+          console.log(this.swiperList);
+        } else if (newVal < oldVal && newVal < this.defaultActive) {
+
+          // this.swiperList.unshift(newVal)
+          // console.log(this.swiperList);
+          // this.$nextTick(()=>{
+          //   console.log(this.$refs.mySwiper);
+          //   this.$refs.mySwiper.slideTo(newVal, 1000, false)
+          // })
+
+        }
+
       },
       // immediate:true,
-      deep:true
+      deep: true
+    },
+    value: {
+      handler(val) {
+        this.search()
+        
+      }
     }
   },
   mounted() {
     // current swiper instance
     // 然后你就可以使用当前上下文内的swiper对象去做你想做的事了
+     
     console.log("this is current swiper instance object", this.swiper);
     // this.swiper.slideTo(3, 1000, false);
   }
