@@ -7,7 +7,7 @@
 <script>
 import formItem from './formItem'
 export default {
-  // inheritAttrs: false,
+  inheritAttrs: false,//是否在dom上生成
   components: {formItem
   },
   // props: {
