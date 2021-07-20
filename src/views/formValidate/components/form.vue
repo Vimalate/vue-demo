@@ -1,6 +1,6 @@
 <template>
   <div>
-    <form-item v-bind="$attrs" v-on="$listeners" ></form-item>
+    <form-item ref="form" v-bind="$attrs" v-on="$listeners" ></form-item>
   </div>
 </template>
 
