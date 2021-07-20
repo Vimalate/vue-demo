@@ -41,6 +41,12 @@ export const constantRouterMap = [
         name: 'swiper',
         component: () => import('@/views/test/swiper'),
         meta: { title: '滑动', keepAlive: false }
+      },
+      {
+        path: '/form',
+        name: 'form',
+        component: () => import('@/views/formValidate'),
+        meta: { title: 'form', keepAlive: false }
       }
     ]
   }
