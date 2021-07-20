@@ -1,11 +1,11 @@
 <template>
   <div class="recommendPage">
     <van-search v-model="value" shape="round" background="#4fc08d" placeholder="请输入搜索关键词" />
-    <swiper :options="swiperOption" ref="mySwiper" @slideChange="slideChange">
+    <!-- <swiper :options="swiperOption" ref="mySwiper" @slideChange="slideChange">
       <swiper-slide v-for="(item,index) in swiperList" :key="index">I'm Slide {{item}}</swiper-slide>
       <div class="swiper-pagination" slot="pagination"></div>
-    </swiper>
-
+    </swiper> -->
+    <van-button type="primary" @click="deconstruction">按钮</van-button>
   </div>
 </template>
 
@@ -25,6 +25,8 @@ export default {
       defaultActive: 1,
       swiperList: [1, 2, '我改变了'],
       value: '',
+      name:'',
+      age:'',
       swiperOption: {
         autoplay: false,
         initialSlide: 1,
@@ -60,7 +62,11 @@ export default {
     },
     search: debounce(function() {
       console.log(this.value);
-    }, 1000)
+    }, 1000),
+    deconstruction(){
+      const obj={name:'dd',age:'12'}
+      // let {name:this.name,}
+    }
   },
   watch: {
     active: {
