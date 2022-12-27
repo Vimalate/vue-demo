@@ -29,7 +29,7 @@ export default {
       queryMonth: $dayjs().format('MM'),
       week: ['一', '二', '三', '四', '五', '六', '日'],
       monthList: [],
-      curMonth: $dayjs().format('YYYY-MM'),//当前年月
+      curMonth: $dayjs().format('YYYY-MM'), // 当前年月
       currentIndex: null
     }
   },
@@ -37,11 +37,11 @@ export default {
     this.getMonthList()
   },
   methods: {
-    isToday(date){
-     return date==$dayjs().format('YYYY-MM-DD')
+    isToday(date) {
+      return date == $dayjs().format('YYYY-MM-DD')
     },
     isHoliday(date) {
-      let num = $dayjs(date).day()
+      const num = $dayjs(date).day()
       if (num == 6 || num == 0) {
         return '休'
       } else {
@@ -53,25 +53,24 @@ export default {
     },
     getMonthList() {
       this.monthList = []
-      //当前月多少天
+      // 当前月多少天
       const numDays = $dayjs(this.curMonth).daysInMonth()
       // 周几---周日(0)改为7
-      let todayWeek = $dayjs(this.curMonth + '-01').day() || 7
-      for (let i = 1; i < todayWeek; i++) {//填充空
+      const todayWeek = $dayjs(this.curMonth + '-01').day() || 7
+      for (let i = 1; i < todayWeek; i++) { // 填充空
         this.monthList.push({})
       }
       for (let i = 1; i <= numDays; i++) {
-        let y = $dayjs(this.curMonth + i).format('YYYY')
-        let m = $dayjs(this.curMonth + i).format('MM')
-        let d = $dayjs(this.curMonth + i).format('DD')
-        let lunar = this.solar2lunar(y, m, d)
-        let dateObj = {
+        const y = $dayjs(this.curMonth + i).format('YYYY')
+        const m = $dayjs(this.curMonth + i).format('MM')
+        const d = $dayjs(this.curMonth + i).format('DD')
+        const lunar = this.solar2lunar(y, m, d)
+        const dateObj = {
           date: $dayjs(this.curMonth + i).format('YYYY-MM-DD'),
           dd: $dayjs(this.curMonth + i).format('D'),
           lunar
         }
         this.monthList.push(dateObj)
-
       }
       let len = this.monthList.length % 7
       len = len ? 7 - len : len
@@ -87,21 +86,20 @@ export default {
      * @d 日
      */
     solar2lunar(y, m, d) {
-      let date = calendar.solar2lunar(y, m, d)
+      const date = calendar.solar2lunar(y, m, d)
       return date
     },
     changeMonth(type) {
       this.currentIndex = null
       if (type == 'subtract') {
-        this.curMonth = $dayjs(this.curMonth + '-01').subtract(1, 'month').format("YYYY-MM")
+        this.curMonth = $dayjs(this.curMonth + '-01').subtract(1, 'month').format('YYYY-MM')
       } else {
-        this.curMonth = $dayjs(this.curMonth + '-01').add(1, 'month').format("YYYY-MM")
+        this.curMonth = $dayjs(this.curMonth + '-01').add(1, 'month').format('YYYY-MM')
       }
-      this.queryYear = $dayjs(this.curMonth).format("YYYY")
-      this.queryMonth = $dayjs(this.curMonth).format("MM")
+      this.queryYear = $dayjs(this.curMonth).format('YYYY')
+      this.queryMonth = $dayjs(this.curMonth).format('MM')
       this.getMonthList()
-
-    },
+    }
   }
 }
 </script>
